@@ -1,5 +1,5 @@
 import { RunProps, RunResults, calculateTotalWaveTime } from '../utils/waveTime'
-import { integerRange } from '../utils/utils'
+import { integerRange, convertSecondsToTime } from '../utils/utils'
 import { useState } from 'react'
 
 
@@ -24,17 +24,17 @@ function RunTimer() {
 
   return (
     <div>
-      <h1>This is the Run Timer</h1>
-      <div>Run configuration:</div>
-      <div>
-        {Object.entries(runProps).map(([key, value]) => (
-          <div key={key}>
-            <div>
-              {key}: {value}
-            </div>
-          </div>
-        ))}
-      </div>
+      <h1>Run Timer</h1>
+      {/*<div>Run configuration:</div>*/}
+      {/*<div>*/}
+      {/*  {Object.entries(runProps).map(([key, value]) => (*/}
+      {/*    <div key={key}>*/}
+      {/*      <div>*/}
+      {/*        {key}: {value}*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  ))}*/}
+      {/*</div>*/}
 
       <div className="controls">
         <label>
@@ -76,11 +76,10 @@ function RunTimer() {
           Intro Sprint Mastery Enabled:{' '}
           <input
             type="checkbox"
-            checked={runProps.introSprintMasteryEnabled}
+            defaultChecked={runProps.introSprintMasteryEnabled}
             onChange={() =>
               setRunProps({
-                ...runProps,
-                introSprintMasteryEnabled: false
+                ...runProps, introSprintMasteryEnabled: !runProps.introSprintMasteryEnabled
               })
             }
             name="introSprintMasteryEnabled"
@@ -130,11 +129,11 @@ function RunTimer() {
           Wave Skip Mastery Enabled:{' '}
           <input
             type="checkbox"
-            checked={runProps.waveSkipMasteryEnabled}
+            defaultChecked={runProps.waveSkipMasteryEnabled}
             onChange={() =>
               setRunProps({
                 ...runProps,
-                waveSkipMasteryEnabled: false
+                waveSkipMasteryEnabled: !runProps.waveSkipMasteryEnabled
               })
             }
             name="waveSkipMasteryEnabled"
@@ -184,11 +183,11 @@ function RunTimer() {
           Tournament:{' '}
           <input
             type="checkbox"
-            checked={runProps.tournament}
+            defaultChecked={runProps.tournament}
             onChange={() =>
               setRunProps({
                 ...runProps,
-                tournament: false
+                tournament: !runProps.tournament
               })
             }
             name="isTournament"
@@ -253,11 +252,17 @@ function RunTimer() {
       </div>
 
       <div className="results">
-        {Object.entries(runResults).map(([key, value]) => (
-          <div key={key}>
-            {key}: {value}
-          </div>
-        ))}
+        <div className="result">
+          {!isNaN(runResults.timeInSeconds) && convertSecondsToTime(runResults.timeInSeconds)}
+        </div>
+
+        <div className="result">
+          {Object.entries(runResults).map(([key, value]) => (
+            <div key={key}>
+              {key}: {value}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
