@@ -11,23 +11,23 @@ export const getRealGameSpeed = (
 ) => {
   let realGameSpeed = 1
   if (displayedGameSpeed <= 1) {
-    realGameSpeed = 6.07999992371
+    realGameSpeed = 1.07000005245
   } else if (displayedGameSpeed <= 1.5) {
-    realGameSpeed = 9.11999988556
+    realGameSpeed = 1.60500001907
   } else if (displayedGameSpeed <= 2) {
-    realGameSpeed = 12.15999984741
+    realGameSpeed = 2
   } else if (displayedGameSpeed <= 2.5) {
-    realGameSpeed = 15.19999980927
+    realGameSpeed = 2.375
   } else if (displayedGameSpeed <= 3) {
-    realGameSpeed = 18.23999977112
+    realGameSpeed = 2.75999999046
   } else if (displayedGameSpeed <= 3.5) {
-    realGameSpeed = 21.28000068665
+    realGameSpeed = 3.07999992371
   } else if (displayedGameSpeed <= 4) {
-    realGameSpeed = 24.31999969482
+    realGameSpeed = 3.3599998951
   } else if (displayedGameSpeed <= 4.5) {
-    realGameSpeed = 27.36000061035
+    realGameSpeed = 3.69000005722
   } else if (displayedGameSpeed <= 5) {
-    realGameSpeed = 30.39999961853
+    realGameSpeed = 4
   } else if (displayedGameSpeed <= 5.5) {
     realGameSpeed = 4.40000009537
   } else if (displayedGameSpeed <= 6) {
@@ -80,7 +80,7 @@ export const getRealGameSpeed = (
     realGameSpeed = 4.98400020599
   } else if (displayedGameSpeed <= 6.24) {
     realGameSpeed = 4.992000103
-  } else if (displayedGameSpeed <= 6.25 || displayedGameSpeed === 6.3) {
+  } else if (displayedGameSpeed >= 6.25) {
     realGameSpeed = 5
   }
   return realGameSpeed
@@ -283,8 +283,6 @@ export interface RunResults {
 // }
 
 
-
-
 // WS Stuff
 const isWaveSkip = (wsChance: number) => {
   // const value = rand.ws.NextDouble();
@@ -338,7 +336,7 @@ export const calculateTotalWaveTime = (runProps: {
 
   // Main loop
   while (runProps.wavesToComplete > currentWave) {
-    let displayedGameSpeed = (currentWave > runProps.gameSpeedAcquireWave) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
+    let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
     // Intro Sprint duration
     while (currentWave < maxWaveInIntroSprint) {
       // console.log('Sprinting wave: ', currentWave)
@@ -358,7 +356,7 @@ export const calculateTotalWaveTime = (runProps: {
 
     // Normal waves
     while (runProps.wavesToComplete > currentWave) {
-      displayedGameSpeed = (currentWave > runProps.gameSpeedAcquireWave) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
+      displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
       // console.log('Current wave: ', currentWave)
 
       if (runProps.waveSkipCardLevel > 0) {
