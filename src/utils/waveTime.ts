@@ -1,3 +1,4 @@
+import runTimer from '../components/RunTimer'
 
 
 /**
@@ -334,9 +335,10 @@ export const calculateTotalWaveTime = (runProps: {
   const wsChance = WAVE_SKIP_CARD[runProps.waveSkipCardLevel]
   const wsDoubleChance: number = WAVE_SKIP_MASTERY[runProps.waveSkipMasteryLevel]
 
+
   // Main loop
-  while (runProps.wavesToComplete > currentWave) {
-    let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
+  while (maxWaveInIntroSprint > currentWave) {
+    let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave && !runProps.tournament) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
     // Intro Sprint duration
     while (currentWave < maxWaveInIntroSprint) {
       // console.log('Sprinting wave: ', currentWave)
@@ -356,7 +358,7 @@ export const calculateTotalWaveTime = (runProps: {
 
     // Normal waves
     while (runProps.wavesToComplete > currentWave) {
-      displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
+      let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave && !runProps.tournament) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
       // console.log('Current wave: ', currentWave)
 
       if (runProps.waveSkipCardLevel > 0) {
@@ -392,7 +394,4 @@ export const calculateTotalWaveTime = (runProps: {
     finalWave: currentWave
   }
 }
-
-// module.exports = { calculateTotalWaveTime }
-// console.log(calculateTotalWaveTime(runProps))
 

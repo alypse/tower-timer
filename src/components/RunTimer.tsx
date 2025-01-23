@@ -16,13 +16,13 @@ function RunTimer() {
     tournament: false,
     gameSpeedAcquireWave: 1000,
     gameSpeedBase: 5.0,
-    gameSpeedPerk: 6.25
+    gameSpeedPerk: 5.0
   })
   const [runResults, setRunResults] = useState<RunResults>({} as RunResults)
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
-      <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
+      <h1 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
         Tower Run Timer
       </h1>
       {/*<div>Run configuration:</div>*/}
@@ -58,7 +58,7 @@ function RunTimer() {
 
           <label className="flex flex-col space-y-2">
             <span className="text-sm font-medium text-gray-300">
-              Wave Accelerator Card Level:
+              Wave Accelerator Card:
             </span>
             <select
               className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -66,7 +66,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  waveAcceleratorCardLevel: parseInt(e.target.value, 10) || 7
+                  waveAcceleratorCardLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
                 })
               }
             >
@@ -79,10 +79,10 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
           <label className="flex flex-col space-y-2">
             <span className="text-sm font-medium text-gray-300">
-              Intro Sprint Card Level:
+              Intro Sprint Card:
             </span>
             <select
               className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -90,7 +90,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  introSprintCardLevel: parseInt(e.target.value, 10) || 7
+                  introSprintCardLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
                 })
               }
             >
@@ -104,7 +104,7 @@ function RunTimer() {
 
           <label className="flex flex-col space-y-2">
             <span className="text-sm font-medium text-gray-300">
-              Intro Sprint Mastery Level:
+              Intro Sprint Mastery:
             </span>
             <select
               className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -112,7 +112,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  introSprintMasteryLevel: parseInt(e.target.value, 10) || 9
+                  introSprintMasteryLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
                 })
               }
             >
@@ -125,10 +125,10 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
           <label className="flex flex-col space-y-2">
             <span className="text-sm font-medium text-gray-300">
-              Waveskip Card Level:
+              Waveskip Card:
             </span>
             <select
               className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -136,7 +136,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  waveSkipCardLevel: parseInt(e.target.value, 10) || 7
+                  waveSkipCardLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
                 })
               }
             >
@@ -150,8 +150,7 @@ function RunTimer() {
 
           <label className="flex flex-col space-y-2">
             <span className="text-sm font-medium text-gray-300">
-              {' '}
-              Wave Skip Mastery Level:
+              Wave Skip Mastery:
             </span>
             <select
               className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -159,7 +158,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  waveSkipMasteryLevel: parseInt(e.target.value, 10) || 9
+                  waveSkipMasteryLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
                 })
               }
             >
@@ -172,63 +171,65 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-4 md:grid-cols-3 gap-4">
-          <label className="flex items-center space-x-3">
-            <span className="text-sm font-medium text-gray-300">
-              Tournament:{' '}
-            </span>
-            <input
-              className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500 focus:ring-offset-gray-800"
-              type="checkbox"
-              defaultChecked={runProps.tournament}
-              onChange={() =>
-                setRunProps({
-                  ...runProps,
-                  tournament: !runProps.tournament
-                })
-              }
-              name="isTournament"
-            />
-          </label>
+        <div className="grid grid-cols-2 md:grid-rows-2 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
+            <label className="flex flex-row justify-start space-x-3">
+              <span className="text-sm font-medium text-gray-300">
+                Tournament:
+              </span>
+              <input
+                className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500 focus:ring-offset-gray-800"
+                type="checkbox"
+                defaultChecked={runProps.tournament}
+                onChange={() =>
+                  setRunProps({
+                    ...runProps,
+                    tournament: !runProps.tournament
+                  })
+                }
+                name="isTournament"
+              />
+            </label>
 
-          <label className="flex items-center space-x-3">
-            <span className="text-sm font-medium text-gray-300">
-              Wave Skip Mastery Enabled:{' '}
-            </span>
-            <input
-              className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500 focus:ring-offset-gray-800"
-              type="checkbox"
-              defaultChecked={runProps.waveSkipMasteryEnabled}
-              onChange={() =>
-                setRunProps({
-                  ...runProps,
-                  waveSkipMasteryEnabled: !runProps.waveSkipMasteryEnabled
-                })
-              }
-              name="waveSkipMasteryEnabled"
-            />
-          </label>
-          <label className="flex items-center space-x-3">
-            <span className="text-sm font-medium text-gray-300">
-              Intro Sprint Mastery Enabled:{' '}
-            </span>
-            <input
-              type="checkbox"
-              className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500 focus:ring-offset-gray-800"
-              defaultChecked={runProps.introSprintMasteryEnabled}
-              onChange={() =>
-                setRunProps({
-                  ...runProps,
-                  introSprintMasteryEnabled: !runProps.introSprintMasteryEnabled
-                })
-              }
-              name="introSprintMasteryEnabled"
-            />
-          </label>
-        </div>
-        {!runProps.tournament &&
-        <div className="grid grid-cols-4 md:grid-cols-3 gap-4">
-          <label className="flex items-center space-x-3">
+            <label className="flex flex-row justify-start space-x-3">
+              <span className="text-sm font-medium text-gray-300">
+                Wave Skip Mastery:
+              </span>
+              <input
+                className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500 focus:ring-offset-gray-800"
+                type="checkbox"
+                defaultChecked={runProps.waveSkipMasteryEnabled}
+                onChange={() =>
+                  setRunProps({
+                    ...runProps,
+                    waveSkipMasteryEnabled: !runProps.waveSkipMasteryEnabled
+                  })
+                }
+                name="waveSkipMasteryEnabled"
+              />
+            </label>
+
+            <label className="flex flex-row justify-start space-x-3">
+              <span className="text-sm font-medium text-gray-300">
+                Intro Sprint Mastery:
+              </span>
+              <input
+                type="checkbox"
+                className="form-checkbox h-5 w-5 text-purple-500 rounded focus:ring-purple-500 focus:ring-offset-gray-800"
+                defaultChecked={runProps.introSprintMasteryEnabled}
+                onChange={() =>
+                  setRunProps({
+                    ...runProps,
+                    introSprintMasteryEnabled:
+                      !runProps.introSprintMasteryEnabled
+                  })
+                }
+                name="introSprintMasteryEnabled"
+              />
+            </label>
+          </div>
+
+          <label className="flex flex-col space-y-2">
             <span className="text-sm font-medium text-gray-300">
               Game Speed Base:
             </span>
@@ -247,48 +248,55 @@ function RunTimer() {
               type="number"
             />
           </label>
+        </div>
 
-          <label className="flex items-center space-x-3">
-            <span className="text-sm font-medium text-gray-300">
-              {' '}
-              Game Speed Perk:
-            </span>
-            <input
-              className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              // value={!runProps.tournament ? runProps.gameSpeedPerk : runProps.gameSpeedBase}
-              value={runProps.gameSpeedPerk}
-              onChange={(e) =>
-                setRunProps({
-                  ...runProps,
-                  gameSpeedPerk: parseFloat(e.target.value) || 6.3
-                })
-              }
-              min={1}
-              max={6.3}
-              step={0.05}
-              type="number"
-            />
-          </label>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
+          {!runProps.tournament && (
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm font-medium text-gray-300">
+                  {' '}
+                  Game Speed Perk:
+                </span>
+                <input
+                  className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  value={runProps.gameSpeedPerk}
+                  // value={runProps.gameSpeedPerk}
+                  onChange={(e) =>
+                    setRunProps({
+                      ...runProps,
+                      gameSpeedPerk: parseFloat(e.target.value) || 6.3
+                    })
+                  }
+                  min={1}
+                  max={6.3}
+                  step={0.05}
+                  type="number"
+                />
+              </label>
 
-          <label className="flex items-center space-x-3">
-            <span className="text-sm font-medium text-gray-300">
-              Game Speed Perk Wave:
-            </span>
-            <input
-              className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              value={runProps.gameSpeedAcquireWave}
-              onChange={(e) =>
-                setRunProps({
-                  ...runProps,
-                  gameSpeedAcquireWave: parseInt(e.target.value, 10) || 1000
-                })
-              }
-              min={100}
-              max={runProps.wavesToComplete}
-              type="number"
-            />
-          </label>
-        </div>}
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm font-medium text-gray-300">
+                  Game Speed Perk Wave:
+                </span>
+                <input
+                  className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  value={runProps.gameSpeedAcquireWave}
+                  onChange={(e) =>
+                    setRunProps({
+                      ...runProps,
+                      gameSpeedAcquireWave: parseInt(e.target.value, 10) || 1000
+                    })
+                  }
+                  min={100}
+                  max={runProps.wavesToComplete}
+                  step={100}
+                  type="number"
+                />
+              </label>
+            </div>
+          )}
+        </div>
 
         <button
           onClick={() => setRunResults(calculateTotalWaveTime(runProps))}
@@ -311,7 +319,7 @@ function RunTimer() {
               className="flex justify-between p-2 border-b border-gray-700"
             >
               <span className="font-medium">{key}:</span>
-              <span>{value}</span>
+              <span>{value.toLocaleString('en-US', { maximumSignificantDigits: 8 })}</span>
             </div>
           ))}
         </div>
