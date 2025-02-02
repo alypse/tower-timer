@@ -21,7 +21,7 @@ function RunTimer() {
   const [runResults, setRunResults] = useState<RunResults>({} as RunResults)
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
+    <div className="min-h-screen bg-gray-950 text-gray-100 p-4">
       <h1 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
         Tower Run Timer
       </h1>
@@ -293,11 +293,10 @@ function RunTimer() {
           Calculate
         </button>
       </div>
-
-      <div className="results mt-8 max-w-3xl mx-auto bg-gray-800 p-6 rounded-xl shadow-lg">
+      {!isNaN(runResults.timeInSeconds) &&
+      <div className="results mt-2 max-w-3xl mx-auto bg-gray-800 p-6 rounded-xl shadow-lg">
         <div className="result text-2xl font-bold text-center text-blue-400 mb-4">
-          {!isNaN(runResults.timeInSeconds) &&
-            convertSecondsToTime(runResults.timeInSeconds)}
+          {convertSecondsToTime(runResults.timeInSeconds)}
         </div>
 
         <div className="result flex flex-wrap gap-4">
@@ -311,7 +310,7 @@ function RunTimer() {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   )
 }
