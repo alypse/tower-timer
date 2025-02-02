@@ -2,7 +2,6 @@ import { RunProps, RunResults, calculateTotalWaveTime } from '../utils/waveTime'
 import { integerRange, convertSecondsToTime } from '../utils/utils'
 import { useState } from 'react'
 
-
 function RunTimer() {
   const [runProps, setRunProps] = useState<RunProps>({
     startingWave: 1,
@@ -27,8 +26,8 @@ function RunTimer() {
         Tower Run Timer
       </h1>
       <div className="controls space-y-6 max-w-3xl mx-auto bg-gray-800 p-6 rounded-xl shadow-lg">
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-          <label className="flex flex-col space-y-2">
+        <div className="flex flex-wrap gap-4">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Waves to run:
             </span>
@@ -47,7 +46,7 @@ function RunTimer() {
             />
           </label>
 
-          <label className="flex flex-col space-y-2">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Wave Accelerator Card:
             </span>
@@ -70,8 +69,8 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-          <label className="flex flex-col space-y-2">
+        <div className="flex flex-wrap gap-4">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Intro Sprint Card:
             </span>
@@ -93,7 +92,7 @@ function RunTimer() {
             </select>
           </label>
 
-          <label className="flex flex-col space-y-2">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Intro Sprint Mastery:
             </span>
@@ -116,8 +115,8 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-          <label className="flex flex-col space-y-2">
+        <div className="flex flex-wrap gap-4">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Waveskip Card:
             </span>
@@ -139,7 +138,7 @@ function RunTimer() {
             </select>
           </label>
 
-          <label className="flex flex-col space-y-2">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Wave Skip Mastery:
             </span>
@@ -162,9 +161,9 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-rows-2 gap-2">
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
-            <label className="flex flex-row justify-start space-x-3">
+        <div className="flex flex-wrap gap-4">
+          <div className="flex-1 flex flex-col gap-2 min-w-[200px]">
+            <label className="flex items-center gap-3">
               <span className="text-sm font-medium text-gray-300">
                 Tournament:
               </span>
@@ -182,7 +181,7 @@ function RunTimer() {
               />
             </label>
 
-            <label className="flex flex-row justify-start space-x-3">
+            <label className="flex items-center gap-3">
               <span className="text-sm font-medium text-gray-300">
                 Wave Skip Mastery:
               </span>
@@ -200,7 +199,7 @@ function RunTimer() {
               />
             </label>
 
-            <label className="flex flex-row justify-start space-x-3">
+            <label className="flex items-center gap-3">
               <span className="text-sm font-medium text-gray-300">
                 Intro Sprint Mastery:
               </span>
@@ -220,7 +219,7 @@ function RunTimer() {
             </label>
           </div>
 
-          <label className="flex flex-col space-y-2">
+          <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
             <span className="text-sm font-medium text-gray-300">
               Game Speed Base:
             </span>
@@ -241,12 +240,11 @@ function RunTimer() {
           </label>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
+        <div className="flex flex-wrap gap-4">
           {!runProps.tournament && (
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-              <label className="flex flex-col space-y-2">
+            <div className="flex flex-wrap gap-4 w-full">
+              <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
                 <span className="text-sm font-medium text-gray-300">
-                  {' '}
                   Game Speed Perk:
                 </span>
                 <input
@@ -265,7 +263,7 @@ function RunTimer() {
                 />
               </label>
 
-              <label className="flex flex-col space-y-2">
+              <label className="flex-1 flex flex-col space-y-2 min-w-[200px]">
                 <span className="text-sm font-medium text-gray-300">
                   Game Speed Perk Wave:
                 </span>
@@ -302,11 +300,11 @@ function RunTimer() {
             convertSecondsToTime(runResults.timeInSeconds)}
         </div>
 
-        <div className="result grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+        <div className="result flex flex-wrap gap-4">
           {Object.entries(runResults).map(([key, value]) => (
             <div
               key={key}
-              className="flex justify-between p-2 border-b border-gray-700"
+              className="flex-1 flex justify-between p-2 border-b border-gray-700 min-w-[200px]"
             >
               <span className="font-medium">{key}:</span>
               <span>{value.toLocaleString('en-US', { maximumSignificantDigits: 8 })}</span>
@@ -317,6 +315,5 @@ function RunTimer() {
     </div>
   )
 }
-
 export default RunTimer
 
