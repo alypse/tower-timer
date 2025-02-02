@@ -5,7 +5,8 @@ import { useState } from 'react'
 
 function RunTimer() {
   const [runProps, setRunProps] = useState<RunProps>({
-    wavesToComplete: 5000,
+    startingWave: 1,
+    targetWave: 5000,
     introSprintCardLevel: 7,
     introSprintMasteryEnabled: true,
     introSprintMasteryLevel: 9,
@@ -25,16 +26,6 @@ function RunTimer() {
       <h1 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
         Tower Run Timer
       </h1>
-      {/*<div>Run configuration:</div>*/}
-      {/*<div>*/}
-      {/*  {Object.entries(runProps).map(([key, value]) => (*/}
-      {/*    <div key={key}>*/}
-      {/*      <div>*/}
-      {/*        {key}: {value}*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  ))}*/}
-      {/*</div>*/}
       <div className="controls space-y-6 max-w-3xl mx-auto bg-gray-800 p-6 rounded-xl shadow-lg">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
           <label className="flex flex-col space-y-2">
@@ -43,11 +34,11 @@ function RunTimer() {
             </span>
             <input
               className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              value={runProps.wavesToComplete}
+              value={runProps.targetWave}
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  wavesToComplete: parseInt(e.target.value, 10) || 100
+                  targetWave: parseInt(e.target.value, 10) || 100
                 })
               }
               min={100}
@@ -136,7 +127,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  waveSkipCardLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
+                  waveSkipCardLevel: parseInt(e.target.value, 10)
                 })
               }
             >
@@ -158,7 +149,7 @@ function RunTimer() {
               onChange={(e) =>
                 setRunProps({
                   ...runProps,
-                  waveSkipMasteryLevel: parseInt(e.target.value, 10) || 0 // todo: Why do I need or 0 here to enable 0 selection
+                  waveSkipMasteryLevel: parseInt(e.target.value, 10)
                 })
               }
             >
@@ -261,7 +252,6 @@ function RunTimer() {
                 <input
                   className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={runProps.gameSpeedPerk}
-                  // value={runProps.gameSpeedPerk}
                   onChange={(e) =>
                     setRunProps({
                       ...runProps,
@@ -289,7 +279,7 @@ function RunTimer() {
                     })
                   }
                   min={100}
-                  max={runProps.wavesToComplete}
+                  max={runProps.targetWave}
                   step={100}
                   type="number"
                 />
@@ -326,7 +316,7 @@ function RunTimer() {
       </div>
     </div>
   )
-      }
+}
 
-      export default RunTimer
+export default RunTimer
 

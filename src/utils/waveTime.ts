@@ -1,5 +1,3 @@
-import runTimer from '../components/RunTimer'
-
 
 /**
  * @function getRealGameSpeed - Return the actual speed multiplier from a displayed game speed, because the number in the UI is not the actual multiplier
@@ -143,10 +141,10 @@ export const getInGameWaveTime = (
  * @returns number - The actual seconds the wave took, not accounting for Device Frame Drift.
  */
 export const getRealWaveTime = ({
-  displayedGameSpeed,
-  waveAcceleratorCardLevel,
-  tournament
-}: {
+                                  displayedGameSpeed,
+                                  waveAcceleratorCardLevel,
+                                  tournament
+                                }: {
   displayedGameSpeed: number
   waveAcceleratorCardLevel: number
   tournament: boolean
@@ -232,7 +230,8 @@ export const INTRO_SPRINT_MASTERY: {[index: number]: any} = {
 }
 
 export interface RunProps {
-  wavesToComplete: number;
+  startingWave: number
+  targetWave: number;
   introSprintCardLevel: number;
   introSprintMasteryEnabled: boolean;
   introSprintMasteryLevel: number;
@@ -251,40 +250,10 @@ export interface RunResults {
   totalWaveSkips: number;
   totalUnskippedWaves: number;
   finalWave: number;
+  introSprintWaves: number;
 }
 
-// Consts for testing
-// const wavesToComplete: number = 5000
-// const introSprintCardLevel: number = 7
-// const introSprintMasteryEnabled: boolean = true
-// const introSprintMasteryLevel:number = 9
-// const waveSkipCardLevel: number = 7
-// const waveSkipMasteryEnabled: boolean = true
-// const waveSkipMasteryLevel: number = 9
-// const waveAcceleratorCardLevel: number = 7
-// const tournament: boolean = false
-// const gameSpeedAcquireWave: number = 1000
-// const gameSpeedBase: number = 5.0
-// const gameSpeedPerk: number = 6.25
-
-// Props for testing
-// const runProps = {
-//   wavesToComplete: 5000,
-//   introSprintCardLevel: 7,
-//   introSprintMasteryEnabled: true,
-//   introSprintMasteryLevel: 9,
-//   waveSkipCardLevel: 7,
-//   waveSkipMasteryEnabled: true,
-//   waveSkipMasteryLevel: 9,
-//   waveAcceleratorCardLevel: 7,
-//   tournament: true,
-//   gameSpeedAcquireWave: 1000,
-//   gameSpeedBase: 5.0,
-//   gameSpeedPerk: 6.25,
-// }
-
-
-// WS Stuff
+// Waveskip randoms
 const isWaveSkip = (wsChance: number) => {
   // const value = rand.ws.NextDouble();
   // return wsChance >= value;
@@ -300,7 +269,7 @@ const isDoubleWaveSkip = (wsDoubleChance: number) => {
 };
 
 // Calculate Intro Sprint end wave
-const introSprintWaves = (
+const maxIntroSprintWaves = (
   introSprintCardLevel: number,
   introSprintMasteryLevel: number,
   introSprintMasteryEnabled: boolean): number => {
@@ -310,12 +279,12 @@ const introSprintWaves = (
   return 0; // Default return value
 }
 
-
-
-// Main function, returns seconds for total run
+// Main function
 export const calculateTotalWaveTime = (runProps: {
-  wavesToComplete: number
+  startingWave: number
+  targetWave: number
   introSprintCardLevel: number
+  introSprintMasteryEnabled: boolean
   introSprintMasteryLevel: number
   gameSpeedAcquireWave: number
   gameSpeedPerk: number
@@ -325,73 +294,86 @@ export const calculateTotalWaveTime = (runProps: {
   waveSkipMasteryLevel: number
   waveAcceleratorCardLevel: number
   tournament: boolean
-  introSprintMasteryEnabled: boolean
 }): RunResults => {
-  let maxWaveInIntroSprint: number = introSprintWaves(runProps.introSprintCardLevel, runProps.introSprintMasteryLevel, runProps.introSprintMasteryEnabled)
-  let currentWave: number = 1
+  let maxWaveInIntroSprint: number = maxIntroSprintWaves(runProps.introSprintCardLevel, runProps.introSprintMasteryLevel, runProps.introSprintMasteryEnabled)
+  let currentWave: number = runProps.startingWave
+  let introSprintWaves: number = 0
   let elapsedTime: number = 0
   let totalWaveSkips: number = 0
   let totalUnskippedWaves: number = 0
   const wsChance = WAVE_SKIP_CARD[runProps.waveSkipCardLevel]
   const wsDoubleChance: number = WAVE_SKIP_MASTERY[runProps.waveSkipMasteryLevel]
 
-
   // Main loop
-  while (maxWaveInIntroSprint > currentWave) {
+  while (maxWaveInIntroSprint > currentWave && runProps.targetWave > currentWave) {
     let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave && !runProps.tournament) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
+
     // Intro Sprint duration
-    while (currentWave < maxWaveInIntroSprint) {
-      // console.log('Sprinting wave: ', currentWave)
-      if (currentWave % 10 == 0) {
-        elapsedTime += getRealWaveTime({ displayedGameSpeed, waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel, tournament: runProps.tournament })
-        currentWave += 10
-      }
-      if (currentWave == 1) {
-        elapsedTime += getRealWaveTime({ displayedGameSpeed, waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel, tournament: runProps.tournament })
-        currentWave += 9
-      }
-      if (currentWave == maxWaveInIntroSprint) {
-        elapsedTime += getRealWaveTime({ displayedGameSpeed, waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel, tournament: runProps.tournament })
-        currentWave += 1
-      }
+    if (currentWave % 10 == 0) {
+      elapsedTime += getRealWaveTime({
+        displayedGameSpeed,
+        waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel,
+        tournament: runProps.tournament
+      })
+      currentWave += 10
+      introSprintWaves += 10
     }
+    if (currentWave == 1) {
+      elapsedTime += getRealWaveTime({
+        displayedGameSpeed,
+        waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel,
+        tournament: runProps.tournament
+      })
+      currentWave += 9
+      introSprintWaves += 9
+    }
+    if (currentWave == maxWaveInIntroSprint) {
+      elapsedTime += getRealWaveTime({
+        displayedGameSpeed,
+        waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel,
+        tournament: runProps.tournament
+      })
+      currentWave += 1
+      introSprintWaves += 1
+    }
+  }
 
-    // Normal waves
-    while (runProps.wavesToComplete > currentWave) {
-      let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave && !runProps.tournament) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
-      // console.log('Current wave: ', currentWave)
+  // Normal waves
+  while (runProps.targetWave > currentWave) {
+    let displayedGameSpeed = (currentWave >= runProps.gameSpeedAcquireWave && !runProps.tournament) ? runProps.gameSpeedPerk : runProps.gameSpeedBase
 
-      if (runProps.waveSkipCardLevel > 0) {
-        // console.log('Attempting to skip wave: ', currentWave)
+    if (runProps.waveSkipCardLevel > 0) {
+      let waveSkips: number = 0
+      while (isWaveSkip(wsChance)) {
+        waveSkips += 1
 
-        let waveSkips: number = 0
-        while (isWaveSkip(wsChance)) {
+        // If you have mastery, roll that as well
+        if (runProps.waveSkipMasteryEnabled && isDoubleWaveSkip(wsDoubleChance)) {
           waveSkips += 1
-
-          // If you have mastery, roll that as well
-          if (runProps.waveSkipMasteryEnabled && isDoubleWaveSkip(wsDoubleChance)) {
-            // console.log('Double Wave Skip')
-            waveSkips += 1
-          }
-          // console.log('Skipped waves: ', waveSkips)
-          currentWave += waveSkips
-          totalWaveSkips += waveSkips
         }
-        if (waveSkips == 0) {
-          // console.log('Running wave: ', currentWave)
-          elapsedTime += getRealWaveTime({ displayedGameSpeed, waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel, tournament: runProps.tournament })
-          currentWave++
-          totalUnskippedWaves++
-        }
+        currentWave += waveSkips
+        totalWaveSkips += waveSkips
       }
+      if (waveSkips == 0) {
+        elapsedTime += getRealWaveTime({ displayedGameSpeed, waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel, tournament: runProps.tournament })
+        currentWave++
+        totalUnskippedWaves++
+      }
+    } else {
+      elapsedTime += getRealWaveTime({
+        displayedGameSpeed,
+        waveAcceleratorCardLevel: runProps.waveAcceleratorCardLevel,
+        tournament: runProps.tournament
+      })
+      currentWave++
+      totalUnskippedWaves++
     }
-    // console.log('Completed waves: ', currentWave)
   }
   return {
     timeInSeconds: elapsedTime,
     totalWaveSkips: totalWaveSkips,
     totalUnskippedWaves: totalUnskippedWaves,
+    introSprintWaves: introSprintWaves,
     finalWave: currentWave
   }
 }
-
